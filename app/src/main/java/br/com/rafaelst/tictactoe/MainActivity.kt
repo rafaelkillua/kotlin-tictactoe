@@ -40,20 +40,22 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (gameRunning == RUNNING) {
-            if (currentPlayer == 1) {
-                buttonClicked.text = "X"
-                buttonClicked.setBackgroundColor(Color.parseColor("#FF03F4E0"))
-                buttonClicked.setTextColor(Color.parseColor("#f00000"))
-                player1.add(id)
-                currentPlayer = 2
-            } else {
-                buttonClicked.text = "O"
-                buttonClicked.setBackgroundColor(Color.parseColor("#FFECF373"))
-                buttonClicked.setTextColor(Color.parseColor("#010f7a"))
-                player2.add(id)
-                currentPlayer = 1
+            if (!player1.contains(id) && !player2.contains(id)) {
+                if (currentPlayer == 1) {
+                    buttonClicked.text = "X"
+                    buttonClicked.setBackgroundColor(Color.parseColor("#FF03F4E0"))
+                    buttonClicked.setTextColor(Color.parseColor("#f00000"))
+                    player1.add(id)
+                    currentPlayer = 2
+                } else {
+                    buttonClicked.text = "O"
+                    buttonClicked.setBackgroundColor(Color.parseColor("#FFECF373"))
+                    buttonClicked.setTextColor(Color.parseColor("#010f7a"))
+                    player2.add(id)
+                    currentPlayer = 1
+                }
+                checkWinner()
             }
-            checkWinner()
         } else {
             Toast.makeText(this, "Jogo terminado", Toast.LENGTH_LONG).show()
         }
