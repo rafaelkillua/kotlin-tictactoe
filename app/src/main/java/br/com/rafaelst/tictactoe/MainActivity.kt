@@ -22,6 +22,8 @@ class MainActivity : AppCompatActivity() {
     var currentPlayer = 1
     val player1 = ArrayList<Int>()
     val player2 = ArrayList<Int>()
+    var player1victories = 0
+    var player2victories = 0
 
     fun clickButton(view: View) {
         val buttonClicked = view as Button
@@ -86,6 +88,13 @@ class MainActivity : AppCompatActivity() {
         if (winner != -1) {
             gameRunning = STOPPED
             restart_button.visibility = View.VISIBLE
+            if (winner == 1) {
+                player1victories += 1
+                player1score.text = player1victories.toString()
+            } else if (winner == 2) {
+                player2victories += 1
+                player2score.text = player2victories.toString()
+            }
             Toast.makeText(this, "Vitoria do player " + winner, Toast.LENGTH_LONG).show()
         } else {
             if (player1.size + player2.size == 9) {
