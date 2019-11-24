@@ -53,11 +53,14 @@ class DashboardActivity : AppCompatActivity() {
                 }
             }
 
-//            R.id.btnRanking -> {
-//                val intent = Intent(this, SqlActivity::class.java)
-//                startActivity(intent)
-//                finish()
-//            }
+            R.id.btnHistory -> {
+                val intent = Intent(this, HistoryActivity::class.java)
+                intent.putExtra("player", player1text.text.toString())
+                intent.putExtra("playerId", playerId)
+                intent.putExtra("credits", credits!!)
+                startActivity(intent)
+                finish()
+            }
         }
     }
 }

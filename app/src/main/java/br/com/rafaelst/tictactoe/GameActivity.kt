@@ -99,31 +99,15 @@ class GameActivity : AppCompatActivity() {
         }
 
         if (winner != -1) {
-            gameRunning = STOPPED
-            restart_button.visibility = View.VISIBLE
-            exit_button.visibility = View.VISIBLE
-            if (winner == 1) {
-                player1victories += 1
-                player1score.text = player1victories.toString()
-            } else if (winner == 2) {
-                player2victories += 1
-                player2score.text = player2victories.toString()
-            }
-            Toast.makeText(this, "Vitoria do player " + if (winner == 1) player1name else player2name, Toast.LENGTH_LONG).show()
-
-            subtractCredits()
+            finishGame(winner)
         } else {
             if (player1.size + player2.size == 9) {
-                gameRunning = STOPPED
-                restart_button.visibility = View.VISIBLE
-                exit_button.visibility = View.VISIBLE
-                subtractCredits()
-                Toast.makeText(this, "Deu velha!", Toast.LENGTH_LONG).show()
+                finishGame(99)
             }
         }
     }
 
-    fun subtractCredits() {
+    private fun subtractCredits() {
         val bd = SqlHelper(this).writableDatabase
         val newCredits = credits?.minus(1)
         credits = newCredits
@@ -138,6 +122,52 @@ class GameActivity : AppCompatActivity() {
             Toast.makeText(this, "Acabaram os creditos. Recarregue.", Toast.LENGTH_LONG).show()
             exit_button.callOnClick()
         }
+    }
+
+    private fun finishGame(winner: Int) {
+        gameRunning = STOPPED
+        restart_button.visibility = View.VISIBLE
+        exit_button.visibility = View.VISIBLE
+        val winnerText: String
+        val winnerName: String?
+        when (winner) {
+            1 -> {
+                player1victories += 1
+                player1score.text = player1victories.toString()
+                winnerText = "Vitoria do player $player1name!"
+                winnerName = player1name
+            }
+            2 -> {
+                player2victories += 1
+                player2score.text = player2victories.toString()
+                winnerText = "Vitoria do player $player2name!"
+                winnerName = player2name
+            }
+            else -> {
+                winnerText = "Deu velha!"
+                winnerName = "~ velha ~"
+            }
+        }
+
+        try {
+            val bd = SqlHelper(this).writableDatabase
+
+            val contentValues = ContentValues().apply {
+                put(TBL_JOGO_PLAYER1, player1name)
+                put(TBL_JOGO_PLAYER2, player2name)
+                put(TBL_JOGO_WINNER, winnerName)
+            }
+
+            bd.insert(
+                TBL_JOGO, null, contentValues
+            )
+            bd.close()
+        } catch (e: Exception) {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show()
+        }
+
+        Toast.makeText(this, winnerText, Toast.LENGTH_LONG).show()
+        subtractCredits()
     }
 
     fun restartGame(view: View) {

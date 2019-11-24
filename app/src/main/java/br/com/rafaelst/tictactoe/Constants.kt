@@ -14,4 +14,6 @@ const val TBL_USUARIO_JOGO_COUNT = "plays"
 
 const val TBL_JOGO = "jogo"
 const val TBL_JOGO_ID =  "___id"
-const val TBL_JOGO_WINNER =  "winner"
+const val TBL_JOGO_PLAYER1 =  "jogador1"
+const val TBL_JOGO_PLAYER2 =  "jogador2"
+const val TBL_JOGO_WINNER =  "vencedor"

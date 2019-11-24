@@ -11,35 +11,36 @@
         android:id="@+id/btnSair"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="37dp"
         android:onClick="logoff"
         android:text="Sair"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.783"
-        app:layout_constraintStart_toEndOf="@+id/btnJogar"
-     />
+        app:layout_constraintStart_toEndOf="@+id/btnJogar" />
 
     <Button
         android:id="@+id/btnJogar"
         android:layout_width="250px"
-        android:layout_height="250px"
+        android:layout_height="85dp"
+        android:layout_marginBottom="20dp"
         android:onClick="play"
         android:text="Jogar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btnSair"
         app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toEndOf="@id/btnRanking"
-        app:layout_constraintVertical_bias="0.812" />
+        app:layout_constraintStart_toEndOf="@id/btnHistory" />
 
     <Button
-        android:id="@+id/btnRanking"
+        android:id="@+id/btnHistory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="37dp"
         android:onClick="play"
-        android:text="Ranking"
+        android:text="Histórico"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btnJogar"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView2"
@@ -80,7 +81,7 @@
         android:id="@+id/creditsText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:text="Credits placeholder"
         app:layout_constraintBottom_toTopOf="@+id/player1text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
