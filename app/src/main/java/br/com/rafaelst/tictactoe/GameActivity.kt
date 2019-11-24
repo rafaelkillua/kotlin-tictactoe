@@ -1,21 +1,34 @@
 package br.com.rafaelst.tictactoe
 
+import android.content.ContentValues
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_game.*
 
-class MainActivity : AppCompatActivity() {
+class GameActivity : AppCompatActivity() {
 
     val STOPPED = 0
     val RUNNING = 1
 
+    var player1name : String? = ""
+    var player2name : String? = ""
+    var playerId : Int? = 0
+    var credits : Int? = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_game)
+        player1name = intent.getStringExtra("player1")
+        player2name = intent.getStringExtra("player2")
+        playerId = intent.getIntExtra("playerId", 0)
+        credits = intent.getIntExtra("credits", 0)
+        player1text.text = player1name
+        player2text.text = player2name
     }
 
     var gameRunning = RUNNING
@@ -88,6 +101,7 @@ class MainActivity : AppCompatActivity() {
         if (winner != -1) {
             gameRunning = STOPPED
             restart_button.visibility = View.VISIBLE
+            exit_button.visibility = View.VISIBLE
             if (winner == 1) {
                 player1victories += 1
                 player1score.text = player1victories.toString()
@@ -95,13 +109,34 @@ class MainActivity : AppCompatActivity() {
                 player2victories += 1
                 player2score.text = player2victories.toString()
             }
-            Toast.makeText(this, "Vitoria do player " + winner, Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Vitoria do player " + if (winner == 1) player1name else player2name, Toast.LENGTH_LONG).show()
+
+            subtractCredits()
         } else {
             if (player1.size + player2.size == 9) {
                 gameRunning = STOPPED
                 restart_button.visibility = View.VISIBLE
+                exit_button.visibility = View.VISIBLE
+                subtractCredits()
                 Toast.makeText(this, "Deu velha!", Toast.LENGTH_LONG).show()
             }
+        }
+    }
+
+    fun subtractCredits() {
+        val bd = SqlHelper(this).writableDatabase
+        val newCredits = credits?.minus(1)
+        credits = newCredits
+        val contentValues = ContentValues().apply {
+            put(TBL_USUARIO_JOGO_COUNT, newCredits)
+        }
+        bd.update(
+            TBL_USUARIO_JOGO, contentValues, "$TBL_USUARIO_IDU = ?", arrayOf(playerId.toString())
+        )
+        bd.close()
+        if (newCredits == 0) {
+            Toast.makeText(this, "Acabaram os creditos. Recarregue.", Toast.LENGTH_LONG).show()
+            exit_button.callOnClick()
         }
     }
 
@@ -125,9 +160,19 @@ class MainActivity : AppCompatActivity() {
         button_9.text = ""
         button_9.setBackgroundResource(android.R.drawable.btn_default)
         restart_button.visibility = View.INVISIBLE
+        exit_button.visibility = View.INVISIBLE
         gameRunning = RUNNING
         currentPlayer = 1
         player1.clear()
         player2.clear()
+    }
+
+    fun exitGame(view: View) {
+        val intent = Intent(this, DashboardActivity::class.java)
+        intent.putExtra("player", player1name)
+        intent.putExtra("playerId", playerId)
+        intent.putExtra("credits", credits)
+        startActivity(intent)
+        finish()
     }
 }
