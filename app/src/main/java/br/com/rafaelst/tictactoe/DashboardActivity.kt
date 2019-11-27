@@ -61,6 +61,15 @@ class DashboardActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             }
+
+            R.id.btnComprar -> {
+                val intent = Intent(this, PaymentActivity::class.java)
+                intent.putExtra("player", player1text.text.toString())
+                intent.putExtra("playerId", playerId)
+                intent.putExtra("credits", credits!!)
+                startActivity(intent)
+                finish()
+            }
         }
     }
 }

@@ -5,4 +5,10 @@
     <string name="reiniciar">Reiniciar</string>
     <string name="_0">0</string>
     <string name="sair_do_jogo">Sair do jogo</string>
+
+    <string-array name="bandeiras_array">
+        <item>Mister</item>
+        <item>Vista</item>
+        <item>Daciolo</item>
+    </string-array>
 </resources>
