@@ -42,14 +42,24 @@ class DashboardActivity : AppCompatActivity() {
 
         when (buttonClicked.id) {
             R.id.btnJogar -> {
-                if (credits!! > 0) {
-                    val intent = Intent(this, GameActivity::class.java)
-                    intent.putExtra("player1", player1text.text.toString())
-                    intent.putExtra("player2", player2text.text.toString())
-                    intent.putExtra("playerId", playerId)
-                    intent.putExtra("credits", credits!!)
-                    startActivity(intent)
-                    finish()
+                val player1 = player1text.text.toString()
+                val player2 = player2text.text.toString()
+                if (player1.trim() == "" || player2.trim() == "") {
+                    Toast.makeText(
+                        this,
+                        "Nomes nao podem estar em branco",
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    if (credits!! > 0) {
+                        val intent = Intent(this, GameActivity::class.java)
+                        intent.putExtra("player1", player1)
+                        intent.putExtra("player2", player2)
+                        intent.putExtra("playerId", playerId)
+                        intent.putExtra("credits", credits!!)
+                        startActivity(intent)
+                        finish()
+                    }
                 }
             }
 
